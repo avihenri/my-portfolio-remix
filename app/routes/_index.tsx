@@ -40,7 +40,7 @@ export default function Index() {
       />
 
       <About 
-        bio={aboutData?.about?.bio}
+        aboutData={aboutData}
         languagesData={languagesData}
       />
     </div>

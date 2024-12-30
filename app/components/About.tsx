@@ -1,7 +1,19 @@
-import { LanguageProps } from "~/utils/interface";
+import { AboutProps, LanguageProps } from "~/utils/interface";
 import Timeline from "./Timeline";
+import { useEffect, useState } from "react";
 
-export default function About({ bio, languagesData }: { bio: string, languagesData: LanguageProps }) {
+export default function About({aboutData, languagesData }: { aboutData: AboutProps, languagesData: LanguageProps }) {
+    const bio = aboutData?.about?.bio;
+    const [sanitizedBio, setSanitizedBio] = useState<string | null>(null);
+
+    useEffect(() => {
+        const processedBio = bio?.html?.replace(/(<p><\/p>)+/g, "<br>");
+        import("dompurify").then((DOMPurify) => {
+            const createDOMPurify = DOMPurify.default(window);
+            setSanitizedBio(createDOMPurify.sanitize(processedBio));
+        });
+    }, [bio]);
+
     return (
         <>
             { languagesData && (
@@ -24,12 +36,12 @@ export default function About({ bio, languagesData }: { bio: string, languagesDa
                         <h2 className="tracking-tighter font-bold dark:text-slate-300 text-slate-700 text-xl md:text-2xl mx-auto m-6 font-mono">
                             Bio
                         </h2>
-                        <p className="tracking-tighter dark:text-slate-400 text-slate-600 text-base 2xl:text-xl mx-auto m-6 font-mono">
-                            {bio}
-                        </p>
+                        <div
+                            className="tracking-tighter dark:text-slate-400 text-slate-600 text-base 2xl:text-xl mx-auto m-6 font-mono"
+                            dangerouslySetInnerHTML={{ __html: sanitizedBio || '' }}
+                        />
                     </>
                 )}
-
 
                 <div className="flex w-1/2 justify-center align-middle px-4">
                     <Timeline />

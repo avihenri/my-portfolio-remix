@@ -2,7 +2,10 @@ import { ReactElement } from "react";
 
 export interface AboutProps {
     about: {
-      bio: string;
+      bio: {
+        markdown: string;
+        html: string;
+      };
     }
 }
 

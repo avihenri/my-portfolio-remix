@@ -4,7 +4,10 @@ export const GET_ABOUT = gql`
     query MyQuery {
       about(where: {id: "cm52c6zv6ad4808mfaezsaytc"}) {
         id
-        bio
+        bio {
+          markdown
+          html
+        }
       }
     }
   `;  

@@ -1,6 +1,5 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { gql } from "graphql-request";
 import { GET_PROJECTS } from "~/graphql/queries";
 import { hygraph } from "~/utils/hygraph.server";
 import { ProjectProps } from "~/utils/interface";
@@ -10,26 +9,24 @@ interface AppProps {
 }
 
 export async function loader({}: LoaderFunctionArgs) {
-  try {
-    const projectsData = await hygraph.request(
-      gql`
-          query MyQuery {
-            projects(orderBy: publishedAt_DESC) {
-              id
-              overview
-              title
-              github
-              demoLink
-              publishedAt
-            }
-        }
-        `
+    let projectsData: ProjectProps[] = [];
+    
+    try {
+      projectsData = await hygraph.request(GET_PROJECTS);
+    } catch (error) {
+      console.error("Error fetching projects data:", error);
+    }
+    
+    return new Response(
+      JSON.stringify({
+        projectsData,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
-    return json({ projectsData });
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    return json({ projectsData: [] });
-  }
 }
 
 const Projects = () => {

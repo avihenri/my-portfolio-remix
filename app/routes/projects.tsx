@@ -51,23 +51,15 @@ const Projects = () => {
           projectsData.projects.map((project) => (
             <div
               key={project.id}
-              className="flex flex-col bg-black border border-gray-700 shadow-lg rounded-lg overflow-hidden w-96 transition-transform duration-300 hover:scale-105"
+              className="flex flex-col bg-white dark:bg-black border border-gray-700 shadow-lg rounded-lg overflow-hidden w-96 transition-transform duration-300 hover:scale-105"
             >
-              {/* Placeholder for project image */}
-              {/* Uncomment and update the `src` if image is available */}
-              {/* <img
-                className="w-full object-cover h-48"
-                src={project.image || "https://via.placeholder.com/400x300"}
-                alt={project.title}
-              /> */}
-
               <div className="flex flex-col flex-1 p-4 justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold text-white font-mono">
+                  <h2 className="text-xl font-semibold text-gray-700 dark:text-white font-mono">
                     {project.title}
                   </h2>
-                  <p className="text-sm text-gray-400 mt-2 font-mono">
-                    {project.overview || "No description available."}
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 font-mono">
+                    {project.overview || ""}
                   </p>
                 </div>
 
@@ -87,7 +79,7 @@ const Projects = () => {
                       href={project.demoLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-center text-white bg-blue-600 hover:bg-blue-500 transition-colors duration-300 rounded-lg px-4 py-2 block font-mono"
+                      className="text-center text-white bg-teal-600 hover:bg-teal-500 transition-colors duration-300 rounded-lg px-4 py-2 block font-mono"
                     >
                       View site
                     </a>

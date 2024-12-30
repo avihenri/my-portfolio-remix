@@ -77,10 +77,10 @@ export default function TopNavbar() {
 
             <Disclosure.Panel className="sm:hidden ">
               <div className="px-6 pt-2 pb-3 space-y-1 font-semibold text-black">
-                <NavbarMenuItem to="/projects" activeExtraClass="font-semibold text-black bg-zinc-500">
+                <NavbarMenuItem to="/projects" activeExtraClass="font-semibold text-gray-900 bg-teal-600">
                   Projects
                 </NavbarMenuItem>
-                <NavbarMenuItem to="/contact" activeExtraClass="font-semibold text-black bg-zinc-500 ">
+                <NavbarMenuItem to="/contact" activeExtraClass="font-semibold text-gray-900 bg-teal-600">
                   Contact Me
                 </NavbarMenuItem>
               </div>

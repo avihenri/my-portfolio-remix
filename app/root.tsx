@@ -8,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRouteError,
 } from "@remix-run/react";
 
 import stylesheet from "~/tailwind.css?url";
@@ -42,6 +43,47 @@ export default function AppWithProvider() {
     </ThemeProvider>
   );
 }
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  let message = "Oops! Looks like you’ve wandered off track.";
+  let subMessage = "The page you're looking for either it doesn't exist, or it’s taking a coffee break ☕";
+  let status = 404;
+
+  if (error instanceof Response) {
+    status = error.status;
+    message = error.statusText || "Oops! Something went wrong.";
+    subMessage = "Looks like we ran into trouble!";
+  }
+
+  return (
+    <html lang="en">
+       <head>
+        <Meta />
+        <Links />
+        <title>Oops! Something went wrong.</title>
+      </head>
+      <body className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
+        <div className="max-w-3xl text-center px-6">
+          <h1 className="text-5xl font-bold mb-6">{message}</h1>
+          <p className="text-2xl font-bold mb-4">{status}</p>
+          <p className="text-lg mb-8 text-gray-400">{subMessage}</p>
+          <a
+            href="/"
+            className="text-gray-800 bg-teal-600 hover:bg-teal-500 px-4 py-2 font-bold rounded-lg transition-colors duration-300"
+          >
+            Head back to homepage
+          </a>
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
+}
+
 
 function App() {
   const { theme } = useLoaderData<typeof loader>();

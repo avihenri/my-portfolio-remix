@@ -58,5 +58,17 @@ export interface SocialCardProps {
   href: string;
   icon: ReactElement;
 }
+
+export interface PhotoGalleryProps {
+  images: {
+    title: string;
+    description: string;
+    altText: string;
+    image: {
+      url: string;
+    };
+    createdAt: string;
+  }[];
+}
   
   

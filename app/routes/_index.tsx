@@ -1,22 +1,25 @@
 import Profile from "~/components/Profile";
 import Me from "/me.png";
 import About from "~/components/About";
-import { AboutProps, LanguageProps, TimelineProps } from "~/utils/interface";
-import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { AboutProps, LanguageProps, PhotoGalleryProps, TimelineProps } from "~/utils/interface";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { hygraph } from "~/utils/hygraph.server";
-import { GET_ABOUT, GET_LANGUAGES, GET_TIMELINE } from "~/graphql/queries";
+import { GET_ABOUT, GET_IMAGES, GET_LANGUAGES, GET_TIMELINE } from "~/graphql/queries";
 import { useLoaderData } from "@remix-run/react";
+import PhotoGallery from "~/components/PhotoGallery";
 
 interface AppProps {
     aboutData: AboutProps;
     languagesData: LanguageProps;
     timelineData: TimelineProps;
+    photoGalleryData: PhotoGalleryProps;
 }
 
 export async function loader({}: LoaderFunctionArgs) {
   let languagesData: LanguageProps[] = [];
   let aboutData: AboutProps | null = null;
   let timelineData: TimelineProps[] = [];
+  let photoGalleryData: PhotoGalleryProps[] = [];
 
   try {
     languagesData = await hygraph.request(GET_LANGUAGES);
@@ -36,12 +39,18 @@ export async function loader({}: LoaderFunctionArgs) {
     console.error("Error fetching timeline data:", error);
   }
 
+  try {
+    photoGalleryData = await hygraph.request(GET_IMAGES);
+  } catch (error) {
+    console.error("Error fetching images data:", error);
+  }
 
   return new Response(
     JSON.stringify({
       languagesData,
       aboutData,
-      timelineData
+      timelineData,
+      photoGalleryData,
     }),
     {
       headers: {
@@ -57,6 +66,7 @@ export default function Index() {
     languagesData,
     aboutData,
     timelineData,
+    photoGalleryData,
   } = useLoaderData<AppProps>();
 
   return (
@@ -65,8 +75,8 @@ export default function Index() {
         imageSrc={Me}
         name="Avril Henry"
         description="Software Developer who is constantly learning and loving it!"
-        width={220}
-        height={220} 
+        width={250}
+        height={250} 
       />
 
       <About 
@@ -74,6 +84,15 @@ export default function Index() {
         languagesData={languagesData}
         timelineData={timelineData}
       />
+
+      {photoGalleryData && (
+        <div className="my-16">
+          <h2 className="tracking-tighter font-bold dark:text-slate-300 text-slate-700 text-xl md:text-2xl mx-auto m-6 font-mono">
+            Photo Gallery
+          </h2>
+          <PhotoGallery photoGalleryData={photoGalleryData} />
+        </div>
+      )}
     </div>
   );
 }

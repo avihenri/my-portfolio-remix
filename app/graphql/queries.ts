@@ -51,3 +51,17 @@ export const GET_TIMELINE = gql`
       }
     }
   `;
+
+export const GET_IMAGES = gql`
+    query MyQuery {
+      images(orderBy: order_DESC) {
+        title
+        description
+        altText
+        image {
+          url
+        }
+        createdAt
+      }
+    }
+  `;

@@ -6,7 +6,7 @@ export default function Profile({ imageSrc, name, description,width, height }: P
       <img
         src={imageSrc}
         alt={name}
-        className="h-auto max-w-32 rounded-full overflow-hidden border-teal-600 border-4"
+        className="h-auto max-w-38 rounded-full overflow-hidden border-teal-600 border-4"
         width={width}
         height={height}
         

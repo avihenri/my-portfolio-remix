@@ -6,6 +6,10 @@ export interface AboutProps {
         markdown: string;
         html: string;
       };
+      otherExperience: {
+        markdown: string;
+        html: string;
+      };
     }
 }
 
@@ -15,6 +19,16 @@ export interface LanguageProps {
     name: string;
     order: number;
     publishedAt: string;
+  }[];
+}
+
+export interface TimelineProps {
+  timelines: {
+    id: string;
+    date: string;
+    endDate: string;
+    title: string;
+    description: string;
   }[];
 }
 

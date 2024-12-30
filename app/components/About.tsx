@@ -1,10 +1,20 @@
-import { AboutProps, LanguageProps } from "~/utils/interface";
+import { AboutProps, LanguageProps, TimelineProps } from "~/utils/interface";
 import Timeline from "./Timeline";
 import { useEffect, useState } from "react";
 
-export default function About({aboutData, languagesData }: { aboutData: AboutProps, languagesData: LanguageProps }) {
+export default function About({
+    aboutData,
+    languagesData,
+    timelineData
+}: {
+    aboutData: AboutProps,
+    languagesData: LanguageProps,
+    timelineData: TimelineProps
+}) {
     const bio = aboutData?.about?.bio;
+    const otherExperience = aboutData?.about?.otherExperience;
     const [sanitizedBio, setSanitizedBio] = useState<string | null>(null);
+    const [sanitizedOtherExperience, setSanitizedOtherExperience] = useState<string | null>(null);
 
     useEffect(() => {
         const processedBio = bio?.html?.replace(/(<p><\/p>)+/g, "<br>");
@@ -13,6 +23,14 @@ export default function About({aboutData, languagesData }: { aboutData: AboutPro
             setSanitizedBio(createDOMPurify.sanitize(processedBio));
         });
     }, [bio]);
+
+    useEffect(() => {
+        const processedOtherExperience = otherExperience?.html?.replace(/(<p><\/p>)+/g, "<br>");
+        import("dompurify").then((DOMPurify) => {
+            const createDOMPurify = DOMPurify.default(window);
+            setSanitizedOtherExperience(createDOMPurify.sanitize(processedOtherExperience));
+        });
+    }, [otherExperience]);
 
     return (
         <>
@@ -26,7 +44,7 @@ export default function About({aboutData, languagesData }: { aboutData: AboutPro
                 </div>
             )}
 
-            <h1 className="tracking-tighter dark:text-slate-100 text-slate-800 text-3xl md:text-4xl mx-auto m-6 font-mono">
+            <h1 className="tracking-tighter dark:text-slate-100 text-slate-800 text-3xl md:text-4xl mx-auto mb-6 font-mono">
                 About Me..
             </h1>
 
@@ -43,9 +61,21 @@ export default function About({aboutData, languagesData }: { aboutData: AboutPro
                     </>
                 )}
 
-                <div className="flex w-1/2 justify-center align-middle px-4">
-                    <Timeline />
-                </div>
+                {timelineData && (
+                    <div className="mt-16">
+                        <h2 className="tracking-tighter font-bold dark:text-slate-300 text-slate-700 text-xl md:text-2xl my-6 font-mono">
+                            Tech Experience
+                        </h2>
+                        <Timeline timelineData={timelineData} />
+                        <h2 className="tracking-tighter font-bold dark:text-slate-300 text-slate-700 text-xl md:text-2xl my-6 font-mono">
+                            Other Experience
+                        </h2>
+                        <div
+                            className="tracking-tighter dark:text-slate-400 text-slate-600 text-base 2xl:text-xl mx-auto m-6 font-mono"
+                            dangerouslySetInnerHTML={{ __html: sanitizedOtherExperience || '' }}
+                        />
+                    </div>
+                )}  
             </div>
         </>
     );

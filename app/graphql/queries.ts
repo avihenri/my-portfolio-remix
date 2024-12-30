@@ -8,6 +8,10 @@ export const GET_ABOUT = gql`
           markdown
           html
         }
+        otherExperience {
+          markdown
+          html
+        }
       }
     }
   `;  
@@ -33,5 +37,17 @@ export const GET_LANGUAGES = gql`
           order
           publishedAt
         }
+    }
+  `;
+
+export const GET_TIMELINE = gql`
+    query MyQuery {
+      timelines(orderBy: date_DESC) {
+        id
+        date
+        endDate
+        title
+        description
+      }
     }
   `;

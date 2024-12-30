@@ -1,14 +1,14 @@
-import { AboutProps, LanguageProps, TimelineProps } from "~/utils/interface";
+import { AboutProps, TagProps, TimelineProps } from "~/utils/interface";
 import Timeline from "./Timeline";
 import { useEffect, useState } from "react";
 
 export default function About({
     aboutData,
-    languagesData,
+    tagData,
     timelineData
 }: {
     aboutData: AboutProps,
-    languagesData: LanguageProps,
+    tagData: TagProps,
     timelineData: TimelineProps
 }) {
     const bio = aboutData?.about?.bio;
@@ -34,14 +34,16 @@ export default function About({
 
     return (
         <>
-            { languagesData && (
-                <div className="flex flex-wrap justify-center align-middle my-16">
-                    {languagesData?.languages && languagesData?.languages.map((language) => (
-                            <span key={language.id} className=" bg-teal-600 text-gray-100 dark:text-gray-900 text-lg font-mono font-medium me-2 px-2.5 py-0.5 my-1 rounded border border-gray-500">
-                                {language.name}
-                            </span>
-                    ))}
-                </div>
+            { tagData && (
+                <>
+                    <div className="flex flex-wrap justify-center align-middle my-16">
+                        {tagData?.tags && tagData?.tags.filter((tag) => tag.type === 'coding').map((tag) => (
+                                <span key={tag.id} className=" bg-teal-600 text-white dark:text-gray-900 text-lg font-mono font-medium me-2 px-2.5 py-0.5 my-1 rounded">
+                                    {tag.name}
+                                </span>
+                        ))}
+                    </div>
+                </>
             )}
 
             <h1 className="tracking-tighter dark:text-slate-100 text-slate-800 text-3xl md:text-4xl mx-auto mb-6 font-mono">

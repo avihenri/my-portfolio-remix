@@ -13,11 +13,12 @@ export interface AboutProps {
     }
 }
 
-export interface LanguageProps {
-  languages: {
+export interface TagProps {
+  tags: {
     id: string
     name: string;
     order: number;
+    type: string;
     publishedAt: string;
   }[];
 }

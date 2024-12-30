@@ -1,30 +1,30 @@
 import Profile from "~/components/Profile";
 import Me from "/me.png";
 import About from "~/components/About";
-import { AboutProps, LanguageProps, PhotoGalleryProps, TimelineProps } from "~/utils/interface";
+import { AboutProps, TagProps, PhotoGalleryProps, TimelineProps } from "~/utils/interface";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { hygraph } from "~/utils/hygraph.server";
-import { GET_ABOUT, GET_IMAGES, GET_LANGUAGES, GET_TIMELINE } from "~/graphql/queries";
+import { GET_ABOUT, GET_IMAGES, GET_TAGS, GET_TIMELINE } from "~/graphql/queries";
 import { useLoaderData } from "@remix-run/react";
 import PhotoGallery from "~/components/PhotoGallery";
 
 interface AppProps {
     aboutData: AboutProps;
-    languagesData: LanguageProps;
+    tagData: TagProps;
     timelineData: TimelineProps;
     photoGalleryData: PhotoGalleryProps;
 }
 
 export async function loader({}: LoaderFunctionArgs) {
-  let languagesData: LanguageProps[] = [];
+  let tagData: TagProps[] = [];
   let aboutData: AboutProps | null = null;
   let timelineData: TimelineProps[] = [];
   let photoGalleryData: PhotoGalleryProps[] = [];
 
   try {
-    languagesData = await hygraph.request(GET_LANGUAGES);
+    tagData = await hygraph.request(GET_TAGS);
   } catch (error) {
-    console.error("Error fetching languages data:", error);
+    console.error("Error fetching tags data:", error);
   }
 
   try {
@@ -47,7 +47,7 @@ export async function loader({}: LoaderFunctionArgs) {
 
   return new Response(
     JSON.stringify({
-      languagesData,
+      tagData,
       aboutData,
       timelineData,
       photoGalleryData,
@@ -63,7 +63,7 @@ export async function loader({}: LoaderFunctionArgs) {
 
 export default function Index() {
   const {
-    languagesData,
+    tagData,
     aboutData,
     timelineData,
     photoGalleryData,
@@ -81,7 +81,7 @@ export default function Index() {
 
       <About 
         aboutData={aboutData}
-        languagesData={languagesData}
+        tagData={tagData}
         timelineData={timelineData}
       />
 

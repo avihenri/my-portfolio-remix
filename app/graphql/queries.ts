@@ -29,12 +29,13 @@ export const GET_PROJECTS = gql`
   }
   `;
 
-export const GET_LANGUAGES = gql`
+export const GET_TAGS = gql`
     query MyQuery {
-      languages(orderBy: order_ASC) {
+      tags(orderBy: order_ASC, first: 100) {
           id
           name
           order
+          type
           publishedAt
         }
     }
@@ -42,7 +43,7 @@ export const GET_LANGUAGES = gql`
 
 export const GET_TIMELINE = gql`
     query MyQuery {
-      timelines(orderBy: date_DESC) {
+      timelines(orderBy: date_DESC, first: 100) {
         id
         date
         endDate
@@ -54,7 +55,7 @@ export const GET_TIMELINE = gql`
 
 export const GET_IMAGES = gql`
     query MyQuery {
-      images(orderBy: order_DESC) {
+      images(orderBy: order_DESC, first: 100) {
         title
         description
         altText
